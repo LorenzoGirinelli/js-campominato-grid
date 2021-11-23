@@ -1,9 +1,24 @@
 document.getElementById('play').addEventListener('click', startGame);
 
 function startGame() {
+    // (1) PRELEVO IL VALORE DELLA DIFFICOLTA'
+    let level = document.getElementById('level').value;
+    console.log(level);
+
+    // (2) SE IL VALORE E' EASY LA GRIGLIA E' DI 100 CELLE
+    let numberOfSquares;
+    if (level === 'easy') {
+        numberOfSquares = 100;
+    } else if (level === 'medium') {
+        numberOfSquares = 81;
+    } else {
+        numberOfSquares = 49;
+    }
+    
+    // (3) SE IL VALORE E' MEDIUM LA GRIGLIA E' DI 81 CELLE
+    // (4) SE IL VALORE E' HARD LA GRIGLIA E' DI 49 CELLE
     // CREARE LA GRIGLIA CON GLI SQUARE
     // Crearmi un array di numeri casuali e non ripetuti da 1 a 100
-    const numberOfSquares = 100;
     let generatedNumbers = generateSquaresNumbers(numberOfSquares);
 
     // Per ogni numero nell'array, creo una cella e la appendo al grid container
@@ -11,7 +26,7 @@ function startGame() {
     mainGrid.innerHTML = '';
     for(let i = 0; i < generatedNumbers.length; i++) {
         const thisNumber = generatedNumbers[i];
-        const newGeneratedSquare = generateGridItem(thisNumber);
+        const newGeneratedSquare = generateGridItem(thisNumber, level);
 
         // Attacco l'evento allo square
         newGeneratedSquare.addEventListener('click', handleSquareClick);
@@ -37,8 +52,10 @@ function handleSquareClick() {
 // number -> numero da inserire nello square
 // 
 // return: Torna l'elemento html creato
-function generateGridItem(number) {
+function generateGridItem(number, level) {
     const newSquare = document.createElement('div');
+    // AGGUINGERE IL LIVELLO ALLA CLASSE SQUARE
+    newSquare.classList.add(`square-${level}`);
     newSquare.classList.add('square');
     newSquare.innerHTML = `<span>${number}</span>`; 
 
